@@ -1,0 +1,613 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#FEF7E5">
+<title>Carbon Rush | ECO PLAYGROUND</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#fef7e5;--green:#75b843;--dark:#173f2b;--lime:#cdeb79;--yellow:#f4c84b;--red:#e44747;--white:#fff;--muted:#727a73;--blue:#4c91a7;--shadow:0 14px 34px rgba(23,63,43,.15)}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:"Prompt",sans-serif;background:var(--cream);color:var(--dark)}
+body{min-height:100vh;background:#fef7e5}
+.wrap{
+  width:min(100%,540px);
+  margin:auto;
+  min-height:100vh;
+  padding:16px 15px 32px;
+  position:relative;
+  isolation:isolate;
+  background:url("images/background-mobile.png") center top/cover no-repeat
+}
+.wrap::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(254,247,229,.16);
+  z-index:-1;
+  pointer-events:none
+}
+button,input,select{font:inherit}
+
+.screen{display:none}.screen.active{display:block}
+.header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}
+.bertram-logo{width:112px;height:62px;object-fit:contain;object-position:left top}
+.rankbtn{width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:2px solid var(--dark);background:#fff;border-radius:50%;padding:8px;cursor:pointer;box-shadow:3px 3px 0 var(--dark)}
+.rankbtn{font-size:24px;line-height:1}
+.game-logo-wrap{text-align:center;margin:4px 0 12px}.game-logo{width:min(88%,390px);height:auto;max-height:190px;object-fit:contain}
+.card{background:rgba(255,255,255,.91);border:2px solid var(--dark);border-radius:24px;padding:18px;box-shadow:6px 6px 0 var(--dark),var(--shadow);margin:13px 0}
+.intro-title{font-size:18px;font-weight:800;text-align:center;margin:0 0 7px}.intro-copy{font-size:12px;line-height:1.6;text-align:center;color:#405246;margin:0 0 12px}
+.howto{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0 15px}
+.how{background:#f5f8e8;border:1.5px solid #d4dfb8;border-radius:15px;padding:9px 6px;text-align:center;font-size:10px;font-weight:700;line-height:1.35}
+.ui-emoji{display:block;font-size:32px;line-height:1;margin:0 auto 6px}.attempt-emoji{font-size:25px;margin:0}
+.attempt-box{display:flex;align-items:center;gap:9px;background:#fff7d5;border:1.5px solid #e6c954;border-radius:14px;padding:9px 11px;margin:10px 0;font-size:11px;font-weight:700}
+
+label{font-size:12px;font-weight:800;display:block;margin:12px 0 6px}
+input,select{width:100%;padding:13px;border:2px solid #d9dfd8;border-radius:14px;background:#fff;outline:none;font-size:14px}
+input:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 4px rgba(117,184,67,.12)}
+.btn{width:100%;border:2px solid var(--dark);border-radius:16px;padding:14px;font-weight:800;font-size:15px;cursor:pointer;margin-top:12px;box-shadow:4px 4px 0 var(--dark)}
+.primary{background:var(--green);color:#fff}.secondary{background:#fff;color:var(--dark)}
+.btn:disabled{opacity:.5;cursor:not-allowed;box-shadow:none}
+.small-note{font-size:10px;color:var(--muted);text-align:center;line-height:1.45;margin-top:10px}
+.hud{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;margin:8px 0 12px}
+.hudbox{background:#fff;border:2px solid var(--dark);border-radius:14px;padding:8px 10px;font-weight:800;font-size:11px;display:flex;align-items:center;gap:6px}
+.hud-emoji{font-size:20px;line-height:1}
+.meter{height:11px;border:1.5px solid var(--dark);border-radius:99px;overflow:hidden;background:#f6c9a0;flex:1;min-width:70px}
+.meter>div{height:100%;width:50%;background:linear-gradient(90deg,var(--green),var(--yellow),var(--red));transition:.25s}
+.scene{text-align:center;margin:7px 0 12px}.scene img{width:72px;height:72px;object-fit:contain}.scene h2{font-size:22px;margin:4px 0}.scene p{font-size:11px;color:var(--muted);font-weight:600;margin:0}.scene-title-th-only{display:block;font-size:22px;line-height:1.2}.choice .choice-th-only{display:block;font-size:13px;line-height:1.35}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.choice{min-height:178px;border:2px solid var(--dark);border-radius:22px;background:#fff;padding:14px 9px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;font-weight:800;cursor:pointer;box-shadow:4px 4px 0 var(--dark);transition:.12s}
+.choice:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--dark)}.choice img{width:70px;height:70px;object-fit:contain;margin-bottom:8px}.choice small{font-size:9px;color:var(--muted);margin-top:6px}
+.feedback{text-align:center;min-height:42px;font-weight:800;font-size:15px;padding:9px;line-height:1.4}.good{color:#2b8a3e}.bad{color:var(--red)}
+.timerbar{height:9px;background:#e8e8df;border-radius:99px;overflow:hidden;margin-top:10px;border:1px solid #b7b7ad}.timerbar>div{height:100%;width:100%;background:var(--green);transition:width .1s linear}
+.result-logo{width:min(72%,300px);display:block;margin:0 auto 8px}.result{text-align:center}.bigscore{font-size:52px;font-weight:800;color:var(--green);line-height:1}
+.grade{display:inline-block;background:var(--yellow);border:2px solid var(--dark);border-radius:999px;padding:8px 13px;font-weight:800;margin:10px 0}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.stat{background:#fff;border:1.5px solid var(--dark);border-radius:15px;padding:12px}.stat b{font-size:20px;display:block}
+.tip{background:#eff8dc;border-left:5px solid var(--green);padding:12px;text-align:left;border-radius:12px;margin-top:14px;font-size:12px;line-height:1.55}
+.remaining-result{margin:10px 0 0;font-size:11px;font-weight:700;color:#4a5f51}
+.modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:18px;z-index:20}.modal.show{display:flex}
+.modalbox{width:min(100%,480px);max-height:80vh;overflow:auto;background:var(--cream);border:2px solid var(--dark);border-radius:22px;padding:18px}.modalbox h2{margin-top:0}.rankrow{display:grid;grid-template-columns:34px 1fr auto;gap:8px;padding:10px 0;border-bottom:1px solid #d9ddcf;font-size:12px}.close{float:right;border:0;background:none;font-size:25px;cursor:pointer}
+@media(max-width:390px){.howto{grid-template-columns:1fr}.choices{gap:8px}.choice{min-height:160px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<section id="start" class="screen active">
+  <div class="header">
+    <img class="bertram-logo" src="images/bertram-green-logo.png" alt="Bertram Green Logo">
+    <button class="rankbtn" type="button" onclick="showRank()" aria-label="Leaderboard">🏆</button>
+  </div>
+
+  <div class="game-logo-wrap">
+    <img class="game-logo" src="images/carbon-rush-logo.png" alt="Carbon Rush Logo">
+  </div>
+
+  <div class="card">
+    <h2 class="intro-title">ภารกิจเลือกให้ไว ลด Impact ให้ทัน</h2>
+    <p class="intro-copy">คุณจะเจอสถานการณ์ใกล้ตัว 10 แบบ เลือกพฤติกรรมที่มีผลกระทบต่อสิ่งแวดล้อมต่ำกว่าให้ถูกและเร็วที่สุด</p>
+
+    <div class="howto">
+      <div class="how"><span class="ui-emoji">🌍</span>เลือกตัวเลือกที่<br><b>Lower Impact</b></div>
+      <div class="how"><span class="ui-emoji">⚡</span>ยิ่งตอบเร็ว<br><b>ยิ่งได้คะแนนเพิ่ม</b></div>
+      <div class="how"><span class="ui-emoji">🔥</span>ตอบถูกต่อเนื่อง<br><b>เก็บ Combo Bonus</b></div>
+    </div>
+
+    <div id="attemptInfo" class="attempt-box"><span class="ui-emoji attempt-emoji">🎮</span><span>เล่นได้คนละ 3 ครั้ง</span></div>
+
+    <label for="name">Employee Name</label>
+    <input id="name" autocomplete="off" placeholder="พิมพ์ชื่อของคุณ">
+
+    <label for="dept">Department</label>
+    <select id="dept">
+      <option value="">เลือก Department</option>
+      <option value="Accounting & Finance">Accounting & Finance</option>
+<option value="Corporate Communication">Corporate Communication</option>
+<option value="Domestic Sales">Domestic Sales</option>
+<option value="E-Commerce">E-Commerce</option>
+<option value="Executive">Executive</option>
+<option value="Human Resource & Administration">Human Resource & Administration</option>
+<option value="Information Technology">Information Technology</option>
+<option value="Internal Audit">Internal Audit</option>
+<option value="International Business Development">International Business Development</option>
+<option value="International Marketing">International Marketing</option>
+<option value="Marketing">Marketing</option>
+<option value="Procurement">Procurement</option>
+<option value="Product Development">Product Development</option>
+<option value="Regulatory Affairs">Regulatory Affairs</option>
+<option value="Research & Development">Research & Development</option>
+<option value="Supply Chain">Supply Chain</option>
+    </select>
+
+    <div id="startError" class="small-note" style="color:#b82929;font-weight:700"></div>
+    <button id="startBtn" class="btn primary" type="button" onclick="startGame()">START MISSION</button>
+  </div>
+
+  <div class="small-note">10 situations • 6 sec / choice • 3 attempts</div>
+</section>
+
+<section id="game" class="screen">
+  <div class="hud">
+    <div class="hudbox"><span class="hud-emoji">🌍</span><span>IMPACT</span><div class="meter"><div id="meter"></div></div></div>
+    <div class="hudbox"><span class="hud-emoji">🔥</span><span id="combo">0</span></div>
+    <div class="hudbox"><span class="hud-emoji">⭐</span><span id="score">0</span></div>
+  </div>
+
+  <div class="card">
+    <div class="scene">
+      <img id="sceneIcon" src="images/scene-coffee.png" alt="">
+      <h2 id="sceneTitle">กาแฟยามเช้า</h2>
+      <p>เลือกตัวเลือกที่กระทบสิ่งแวดล้อมน้อยกว่า</p>
+    </div>
+
+    <div class="choices">
+      <button id="left" class="choice" type="button" onclick="choose(0)"></button>
+      <button id="right" class="choice" type="button" onclick="choose(1)"></button>
+    </div>
+
+    <div id="feedback" class="feedback"></div>
+    <div class="timerbar"><div id="timebar"></div></div>
+  </div>
+
+  <div class="small-note">ข้อ <span id="qnum">1</span>/<span id="qtotal">10</span> • ตอบเร็ว = คะแนนมากขึ้น</div>
+</section>
+
+<section id="result" class="screen">
+  <img class="result-logo" src="images/carbon-rush-logo.png" alt="Carbon Rush Logo">
+  <div class="card result">
+    <div>YOUR IMPACT SCORE</div>
+    <div id="finalScore" class="bigscore">0</div>
+    <div id="grade" class="grade">CARBON CHAMPION</div>
+
+    <div class="stats">
+      <div class="stat"><b id="correct">0</b>Better Choices</div>
+      <div class="stat"><b id="bestCombo">0</b>Best Combo</div>
+      <div class="stat"><b id="avg">0s</b>Avg. Response</div>
+      <div class="stat"><b id="wrong">0</b>Higher Impact</div>
+    </div>
+
+    <div id="impactTip" class="tip"><b>YOUR IMPACT TIP</b><br>การใช้ของเดิมให้นานขึ้น ลดของใช้ครั้งเดียว และใช้ทรัพยากรเท่าที่จำเป็น ช่วยลดผลกระทบที่เกิดขึ้นตลอดวงจรชีวิตของสิ่งของได้</div>
+    <div id="remainingResult" class="remaining-result"></div>
+
+    <button id="againBtn" class="btn primary" type="button" onclick="playAgain()">PLAY AGAIN</button>
+    <button class="btn secondary" type="button" onclick="showRank()">TOP 10</button>
+    <button class="btn secondary" type="button" onclick="goHome()">HOME</button>
+  </div>
+</section>
+
+</div>
+
+<div id="modal" class="modal">
+  <div class="modalbox">
+    <button class="close" type="button" onclick="modal.classList.remove('show')">×</button>
+    <h2>TOP 10 CARBON CHAMPIONS</h2>
+    <div id="ranklist"></div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   GOOGLE APPS SCRIPT
+   ใส่ Web App URL ที่ลงท้ายด้วย /exec ตรงนี้เมื่อพร้อมใช้งานจริง
+   ============================================================ */
+/*
+  REQUIRED PNG ASSETS
+  images/background-mobile.png
+  images/bertram-green-logo.png
+  images/carbon-rush-logo.png
+  UI icons use emoji directly in HTML (no icon PNG files required)
+  images/scene-*.png
+  images/choice-*.png
+*/
+const SCRIPT_URL = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
+
+const MAX_ATTEMPTS = 3;
+const CHOICE_TIME_MS = 6000;
+
+const SITUATIONS = [
+  {
+    scene:"images/scene-coffee.png", title:"MORNING COFFEE", titleTh:"กาแฟยามเช้า",
+    choices:[
+      {icon:"images/choice-disposable.png", label:"Disposable Cup", labelTh:"แก้วใช้ครั้งเดียว", better:false},
+      {icon:"images/choice-reusable-cup.png", label:"Reusable Cup", labelTh:"ใช้แก้วส่วนตัว", better:true}
+    ],
+    tip:"ใช้แก้วเดิมซ้ำช่วยลดความต้องการผลิตและทิ้งบรรจุภัณฑ์แบบใช้ครั้งเดียว"
+  },
+  {
+    scene:"images/scene-light.png", title:"LEAVING THE ROOM", titleTh:"ก่อนออกจากห้อง",
+    choices:[
+      {icon:"images/choice-light-on.png", label:"Leave lights on", labelTh:"เปิดไฟทิ้งไว้", better:false},
+      {icon:"images/choice-light-off.png", label:"Turn lights off", labelTh:"ปิดไฟเมื่อไม่ใช้", better:true}
+    ],
+    tip:"ปิดไฟเมื่อไม่ใช้งานช่วยลดการใช้พลังงานโดยไม่จำเป็น"
+  },
+  {
+    scene:"images/scene-shopping.png", title:"SHOPPING", titleTh:"ซื้อของ",
+    choices:[
+      {icon:"images/choice-new-bag.png", label:"Take a new bag", labelTh:"รับถุงใหม่", better:false},
+      {icon:"images/choice-reusable-bag.png", label:"Bring reusable bag", labelTh:"ใช้ถุงผ้าส่วนตัว", better:true}
+    ],
+    tip:"การใช้ถุงเดิมซ้ำช่วยลดการใช้ทรัพยากรและของใช้แบบครั้งเดียว"
+  },
+  {
+    scene:"images/scene-lunch.png", title:"LUNCH TIME", titleTh:"มื้อกลางวัน",
+    choices:[
+      {icon:"images/choice-too-much.png", label:"Take more than needed", labelTh:"ตักอาหารเกินที่กิน", better:false},
+      {icon:"images/choice-right-portion.png", label:"Take what you can finish", labelTh:"ตักเท่าที่กินหมด", better:true}
+    ],
+    tip:"ตักอาหารเท่าที่กินหมดช่วยลด Food Waste และทรัพยากรที่สูญเสียไปพร้อมอาหาร"
+  },
+  {
+    scene:"images/scene-document.png", title:"WORK DOCUMENT", titleTh:"เอกสารการทำงาน",
+    choices:[
+      {icon:"images/choice-print.png", label:"Print unnecessarily", labelTh:"พิมพ์เอกสารโดยไม่จำเป็น", better:false},
+      {icon:"images/choice-digital.png", label:"Use digital document", labelTh:"ใช้เอกสารดิจิทัล", better:true}
+    ],
+    tip:"เลือกใช้เอกสารดิจิทัลเมื่อเหมาะสม ช่วยลดการใช้กระดาษและวัสดุสิ้นเปลือง"
+  },
+  {
+    scene:"images/scene-water.png", title:"WASHING", titleTh:"การล้างทำความสะอาด",
+    choices:[
+      {icon:"images/choice-water-on.png", label:"Leave water running", labelTh:"เปิดน้ำทิ้งไว้", better:false},
+      {icon:"images/choice-water-off.png", label:"Turn it off when unused", labelTh:"ปิดน้ำเมื่อไม่ใช้", better:true}
+    ],
+    tip:"ปิดน้ำช่วงที่ไม่ใช้งานช่วยลดการใช้น้ำและพลังงานที่เกี่ยวข้องกับการจัดการน้ำ"
+  },
+  {
+    scene:"images/scene-takeaway.png", title:"TAKEAWAY", titleTh:"ซื้อกลับบ้าน",
+    choices:[
+      {icon:"images/choice-disposables.png", label:"Take every disposable", labelTh:"รับของใช้ครั้งเดียวทั้งหมด", better:false},
+      {icon:"images/choice-decline.png", label:"Decline what you do not need", labelTh:"ไม่รับของที่ไม่จำเป็น", better:true}
+    ],
+    tip:"ปฏิเสธช้อน หลอด หรือบรรจุภัณฑ์ที่ไม่จำเป็น ช่วยลดของใช้ครั้งเดียวได้ทันที"
+  },
+  {
+    scene:"images/scene-waste.png", title:"AFTER LUNCH", titleTh:"หลังมื้ออาหาร",
+    choices:[
+      {icon:"images/choice-mixed-waste.png", label:"Mix all waste", labelTh:"ทิ้งขยะรวมกัน", better:false},
+      {icon:"images/choice-sort.png", label:"Sort waste correctly", labelTh:"แยกขยะให้ถูกต้อง", better:true}
+    ],
+    tip:"การแยกขยะให้ถูกต้องเพิ่มโอกาสให้วัสดุถูกนำกลับไปใช้ประโยชน์ได้"
+  },
+  {
+    scene:"images/scene-clothing.png", title:"CLOTHING", titleTh:"เสื้อผ้า",
+    choices:[
+      {icon:"images/choice-one-time.png", label:"Buy for one-time use", labelTh:"ซื้อมาใช้เพียงครั้งเดียว", better:false},
+      {icon:"images/choice-rewear.png", label:"Wear & reuse longer", labelTh:"ใช้เสื้อผ้าเดิมให้นานขึ้น", better:true}
+    ],
+    tip:"ใช้เสื้อผ้าเดิมให้นานขึ้นช่วยกระจายผลกระทบจากการผลิตไปตลอดอายุการใช้งานที่ยาวขึ้น"
+  },
+  {
+    scene:"images/scene-food.png", title:"FOOD SCRAPS", titleTh:"เศษอาหาร",
+    choices:[
+      {icon:"images/choice-general-waste.png", label:"General waste", labelTh:"ทิ้งรวมกับขยะทั่วไป", better:false},
+      {icon:"images/choice-compost.png", label:"Compost where available", labelTh:"แยกไปทำปุ๋ย", better:true}
+    ],
+    tip:"เศษอาหารที่เข้าสู่ระบบปุ๋ยอย่างเหมาะสมสามารถกลับมาเป็นทรัพยากรแทนการทิ้งรวม"
+  }
+];
+
+let gameQuestions=[];
+let idx=0, score=0, combo=0, bestCombo=0, correct=0, wrong=0, impact=50;
+let questionStarted=0, timer=null, times=[], wrongTips=[];
+let currentPlayer="", currentDepartment="", currentAttempt=0;
+const $=id=>document.getElementById(id);
+const modal=$("modal");
+
+function normalizeName(name){
+  return name.trim().toLowerCase().replace(/\s+/g," ");
+}
+function attemptKey(name){
+  return "carbon_rush_attempts_"+normalizeName(name);
+}
+function localAttempts(name){
+  return Number(localStorage.getItem(attemptKey(name))||0);
+}
+function setLocalAttempts(name,count){
+  localStorage.setItem(attemptKey(name),String(count));
+}
+function resultKey(){
+  return "carbon_rush_results";
+}
+
+function screen(id){
+  document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));
+  $(id).classList.add("active");
+  window.scrollTo(0,0);
+}
+
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+async function getAttemptCount(name){
+  // ถ้ายังไม่ใส่ Apps Script จะล็อก 3 ครั้งจาก browser นี้ก่อน
+  if(!SCRIPT_URL || SCRIPT_URL.includes("PASTE_YOUR")) return localAttempts(name);
+
+  // เมื่อทำ Apps Script จริง แนะนำให้รองรับ:
+  // GET ?action=attempts&name=...
+  // response: { "ok": true, "attempts": 2 }
+  try{
+    const url=`${SCRIPT_URL}?action=attempts&name=${encodeURIComponent(name)}&t=${Date.now()}`;
+    const r=await fetch(url);
+    const data=await r.json();
+    if(typeof data.attempts==="number") return data.attempts;
+  }catch(err){
+    console.warn("Remote attempt check failed; using local fallback",err);
+  }
+  return localAttempts(name);
+}
+
+async function updateAttemptInfo(){
+  const name=$("name").value.trim();
+  const span=$("attemptInfo").querySelector("span");
+  if(!name){
+    span.textContent="เล่นได้คนละ 3 ครั้ง";
+    return;
+  }
+  span.textContent="กำลังเช็กสิทธิ์...";
+  const used=await getAttemptCount(name);
+  const left=Math.max(0,MAX_ATTEMPTS-used);
+  span.textContent=left>0
+    ? `${name} เหลือสิทธิ์เล่น ${left} ครั้ง จากทั้งหมด 3 ครั้ง`
+    : `${name} ใช้สิทธิ์ครบ 3 ครั้งแล้ว`;
+}
+
+$("name").addEventListener("blur",updateAttemptInfo);
+
+async function startGame(){
+  const name=$("name").value.trim();
+  const dept=$("dept").value;
+  $("startError").textContent="";
+
+  if(!name || !dept){
+    $("startError").textContent="กรุณากรอกชื่อและเลือก Department ก่อนเริ่มเกม";
+    return;
+  }
+
+  const used=await getAttemptCount(name);
+  if(used>=MAX_ATTEMPTS){
+    $("startError").textContent="ชื่อพนักงานนี้ใช้สิทธิ์ครบ 3 ครั้งแล้ว";
+    await updateAttemptInfo();
+    return;
+  }
+
+  currentPlayer=name;
+  currentDepartment=dept;
+  currentAttempt=used+1;
+
+  // lock ทันทีฝั่ง browser เพื่อลดการกดซ้ำ
+  setLocalAttempts(name,currentAttempt);
+  await updateAttemptInfo();
+
+  idx=0;score=0;combo=0;bestCombo=0;correct=0;wrong=0;impact=50;times=[];wrongTips=[];
+  gameQuestions=shuffle(SITUATIONS);
+  screen("game");
+  loadQ();
+}
+
+function setChoice(el,data){
+  el.innerHTML=`<img src="${data.icon}" alt=""><span class="choice-th-only">${data.labelTh||data.label||""}</span><small>แตะเพื่อเลือก</small>`;
+}
+
+function loadQ(){
+  if(idx>=gameQuestions.length){ finish(); return; }
+
+const q=gameQuestions[idx];
+$("sceneIcon").src=q.scene;
+$("sceneTitle").innerHTML=`<span class="scene-title-th-only">${q.titleTh||q.title||""}</span>`;
+
+  // สลับตำแหน่งซ้าย/ขวาทุกข้อ ป้องกันการจำว่าคำตอบอยู่ฝั่งเดิม
+  const randomized=Math.random()<.5 ? q.choices : [q.choices[1],q.choices[0]];
+  $("left").dataset.better=String(randomized[0].better);
+  $("right").dataset.better=String(randomized[1].better);
+  setChoice($("left"),randomized[0]);
+  setChoice($("right"),randomized[1]);
+
+  $("qnum").textContent=idx+1;
+  $("qtotal").textContent=gameQuestions.length;
+  $("feedback").textContent="";
+  $("feedback").className="feedback";
+  $("combo").textContent=combo;
+  $("score").textContent=score;
+  $("meter").style.width=impact+"%";
+
+  questionStarted=performance.now();
+  startTimer();
+}
+
+function startTimer(){
+  clearInterval(timer);
+  const start=performance.now();
+  timer=setInterval(()=>{
+    const left=Math.max(0,1-(performance.now()-start)/CHOICE_TIME_MS);
+    $("timebar").style.width=(left*100)+"%";
+    if(left<=0){
+      clearInterval(timer);
+      answer(false,CHOICE_TIME_MS/1000,true);
+    }
+  },100);
+}
+
+function choose(choiceIndex){
+  clearInterval(timer);
+  const el=choiceIndex===0 ? $("left") : $("right");
+  const sec=(performance.now()-questionStarted)/1000;
+  answer(el.dataset.better==="true",sec,false);
+}
+
+function answer(ok,sec,timedOut){
+  times.push(sec);
+  const q=gameQuestions[idx];
+
+  if(ok){
+    correct++;
+    combo++;
+    bestCombo=Math.max(bestCombo,combo);
+    impact=Math.max(8,impact-5);
+
+    const speed=Math.max(0,Math.round(50-(sec/(CHOICE_TIME_MS/1000))*50));
+    const comboBonus=combo>=8?100:combo>=5?60:combo>=3?30:0;
+    const gained=100+speed+comboBonus;
+    score+=gained;
+
+    $("feedback").textContent=`LOWER IMPACT! +${gained} • COMBO x${combo}`;
+    $("feedback").className="feedback good";
+  }else{
+    wrong++;
+    combo=0;
+    impact=Math.min(95,impact+9);
+    wrongTips.push(q.tip);
+    $("feedback").textContent=timedOut ? "TIME'S UP • COMBO RESET" : "HIGHER IMPACT • COMBO RESET";
+    $("feedback").className="feedback bad";
+  }
+
+  $("score").textContent=score;
+  $("combo").textContent=combo;
+  $("meter").style.width=impact+"%";
+
+  idx++;
+  setTimeout(loadQ,850);
+}
+
+function finish(){
+  clearInterval(timer);
+
+  $("finalScore").textContent=score;
+  $("correct").textContent=correct;
+  $("wrong").textContent=wrong;
+  $("bestCombo").textContent=bestCombo;
+  $("avg").textContent=(times.length ? times.reduce((a,b)=>a+b,0)/times.length : 0).toFixed(1)+"s";
+
+  $("grade").textContent=correct>=9 ? "CARBON CHAMPION" : correct>=7 ? "ECO MOVER" : "GREEN STARTER";
+
+  const uniqueTips=[...new Set(wrongTips)];
+  const tipText=uniqueTips.length
+    ? uniqueTips.slice(0,2).join(" ")
+    : "คุณเลือก Lower Impact ได้ดีมาก ลองนำหลักคิดเดียวกันไปใช้กับพฤติกรรมในชีวิตประจำวันต่อได้เลย";
+  $("impactTip").innerHTML="<b>YOUR IMPACT TIP</b><br>"+tipText;
+
+  saveResult();
+  updateResultAttempts();
+  screen("result");
+}
+
+function resultPayload(){
+  return {
+    action:"submitCarbonRush",
+    game:"CARBON RUSH",
+    timestamp:new Date().toISOString(),
+    name:currentPlayer,
+    department:currentDepartment,
+    attempt:currentAttempt,
+    score:score,
+    correct:correct,
+    wrong:wrong,
+    totalQuestions:gameQuestions.length,
+    averageTime:Number((times.length ? times.reduce((a,b)=>a+b,0)/times.length : 0).toFixed(2)),
+    bestCombo:bestCombo
+  };
+}
+
+function saveResult(){
+  // เก็บ local สำหรับ preview/rank fallback
+  const ranks=JSON.parse(localStorage.getItem(resultKey())||"[]");
+  ranks.push(resultPayload());
+  localStorage.setItem(resultKey(),JSON.stringify(ranks));
+
+  // ถ้าใส่ Apps Script แล้ว จะส่งผลให้ด้วย
+  if(!SCRIPT_URL || SCRIPT_URL.includes("PASTE_YOUR")) return;
+
+  fetch(SCRIPT_URL,{
+    method:"POST",
+    redirect:"follow",
+    headers:{"Content-Type":"text/plain;charset=utf-8"},
+    body:JSON.stringify(resultPayload())
+  }).catch(err=>console.error("Save result failed",err));
+}
+
+async function updateResultAttempts(){
+  const used=await getAttemptCount(currentPlayer);
+  const left=Math.max(0,MAX_ATTEMPTS-used);
+  $("remainingResult").textContent=left>0 ? `เหลือสิทธิ์เล่นอีก ${left} ครั้ง` : "ใช้สิทธิ์ครบ 3 ครั้งแล้ว";
+  $("againBtn").disabled=left<=0;
+  $("againBtn").textContent=left>0 ? `PLAY AGAIN • เหลือ ${left} ครั้ง` : "ใช้สิทธิ์ครบ 3 ครั้งแล้ว";
+}
+
+async function playAgain(){
+  const used=await getAttemptCount(currentPlayer);
+  if(used>=MAX_ATTEMPTS){
+    await updateResultAttempts();
+    return;
+  }
+
+  currentAttempt=used+1;
+  setLocalAttempts(currentPlayer,currentAttempt);
+
+  idx=0;score=0;combo=0;bestCombo=0;correct=0;wrong=0;impact=50;times=[];wrongTips=[];
+  gameQuestions=shuffle(SITUATIONS);
+  screen("game");
+  loadQ();
+}
+
+function goHome(){
+  $("name").value=currentPlayer || $("name").value;
+  $("dept").value=currentDepartment || $("dept").value;
+  updateAttemptInfo();
+  screen("start");
+}
+
+async function showRank(){
+  $("ranklist").innerHTML="<p>กำลังโหลดอันดับ...</p>";
+  modal.classList.add("show");
+
+  // ถ้าใส่ Apps Script แนะนำรองรับ:
+  // GET ?action=rank
+  // response: { "rank": [{name,department,score}, ...] }
+  if(SCRIPT_URL && !SCRIPT_URL.includes("PASTE_YOUR")){
+    try{
+      const r=await fetch(`${SCRIPT_URL}?action=rank&t=${Date.now()}`);
+      const data=await r.json();
+      if(Array.isArray(data.rank)){
+        renderRank(data.rank);
+        return;
+      }
+    }catch(err){
+      console.warn("Remote rank failed; using local fallback",err);
+    }
+  }
+
+  const ranks=JSON.parse(localStorage.getItem(resultKey())||"[]");
+  const bestBy={};
+  ranks.forEach(r=>{
+    if(!bestBy[r.name] || Number(r.score)>Number(bestBy[r.name].score)) bestBy[r.name]=r;
+  });
+  const list=Object.values(bestBy).sort((a,b)=>Number(b.score)-Number(a.score)).slice(0,10);
+  renderRank(list);
+}
+
+function renderRank(list){
+  $("ranklist").innerHTML=list.length
+    ? list.map((r,i)=>`<div class="rankrow"><b>${i+1}</b><div><b>${escapeHtml(r.name||"")}</b><br><small>${escapeHtml(r.department||r.dept||"")}</small></div><b>${Number(r.score||0).toLocaleString()}</b></div>`).join("")
+    : "<p>ยังไม่มีคะแนน</p>";
+}
+
+function escapeHtml(value){
+  return String(value??"")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+</script>
+</body>
+</html>
